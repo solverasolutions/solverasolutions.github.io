@@ -1,22 +1,20 @@
 # Solvera Solutions
 
-React + Vite project for [solverasolutions.github.io](https://solverasolutions.github.io).
+React + Vite site for [solverasolutions.github.io](https://solverasolutions.github.io). Clean structure: `src/main.js` entry (no `.jsx` in HTML to avoid MIME issues), `App.js`, and components under `src/components/` (layout + sections).
 
 ## Running locally
-
-**Do not open `index.html` directly in the browser** (e.g. via `file://` or a static file server). The app uses JSX and must be served by Vite so scripts are transpiled and sent with the correct MIME type.
 
 1. Install dependencies (once):
    ```bash
    npm install
    ```
 
-2. Start the development server:
+2. Start the dev server (do not open `index.html` directly):
    ```bash
    npm run dev
    ```
 
-3. Open the URL Vite prints (e.g. `http://localhost:5173`) in your browser.
+3. Open the URL Vite prints (e.g. `http://localhost:5173`).
 
 ## Building for production
 
@@ -24,7 +22,7 @@ React + Vite project for [solverasolutions.github.io](https://solverasolutions.g
 npm run build
 ```
 
-Output is in the `dist/` folder. To preview the production build locally:
+Output is in `dist/`. To preview:
 
 ```bash
 npm run preview
@@ -32,15 +30,33 @@ npm run preview
 
 ## Deployment (GitHub Pages)
 
-This repo uses GitHub Actions to build and deploy. On push to `main`, the workflow builds the app and deploys the **contents of `dist/`** to GitHub Pages.
+The repo uses GitHub Actions to build and deploy. On push to `main`, the workflow builds and deploys **only the contents of `dist/`**.
 
-- In the repo **Settings → Pages**, set **Source** to **GitHub Actions** (not "Deploy from a branch"). Otherwise the live site would serve the raw source and trigger MIME/JSX errors.
-- After each push to `main`, the workflow runs and updates the live site.
+- In **Settings → Pages**, set **Source** to **GitHub Actions** (not “Deploy from a branch”).
+- Never deploy the project root as static files; that can cause MIME/script errors.
 
-## Troubleshooting: MIME type error for `.jsx`
+## Avoiding MIME type errors
 
-If you see: *"Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of 'text/jsx'"*:
+**Do not open `index.html` directly** (e.g. via `file://`) or serve the project root as static files. Browsers can then request `/src/main.jsx`, which some servers serve as `text/jsx`, causing “Expected a JavaScript module but got MIME type text/jsx”. **Always** use `npm run dev` for development and deploy only the **built** `dist/` folder for production (e.g. via the GitHub Actions workflow). The workflow builds the app and deploys `dist/`, so the live site never serves raw `.jsx` files.
 
-- **Cause:** The browser is loading the **source** `index.html` (which points to `/src/main.jsx`). Raw `.jsx` is then served with MIME type `text/jsx`, which module scripts reject.
-- **Local fix:** Do not open `index.html` via `file://` or serve the project root with a static server. Use **`npm run dev`** or **`npm start`** (Vite dev server), or **`npm run build`** then **`npm run preview`** to serve the built `dist/` folder.
-- **GitHub Pages fix:** In **Settings → Pages**, set **Source** to **GitHub Actions**. The workflow deploys the built `dist/` output (with compiled `.js`), not the repo source.
+## Logo
+
+Place your logo at **`public/logo.png`**. It is referenced as `/logo.png` in the app. If you had a `logo.png` in the project root before, move it to `public/logo.png`.
+
+## Project structure
+
+```
+src/
+  main.jsx          # Entry
+  App.jsx           # Root component
+  index.css         # Global styles
+  components/
+    layout/         # Navbar.jsx, Footer.jsx
+    sections/       # Hero, About, Services, WhyUs, Process, Technologies, FAQ, Contact, FinalCTA
+    ui/             # Icons.jsx, AnimatedSection.jsx
+  hooks/
+    useInView.js    # Intersection Observer hook (plain JS)
+public/
+  favicon.svg
+  logo.png          # Add your logo here
+```
