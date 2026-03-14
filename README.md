@@ -1,6 +1,6 @@
 # Solvera Solutions
 
-React + Vite site for [solverasolutions.github.io](https://solverasolutions.github.io). Clean structure: `src/main.js` entry (no `.jsx` in HTML to avoid MIME issues), `App.js`, and components under `src/components/` (layout + sections).
+React + Vite site for [solverasolutions.github.io](https://solverasolutions.github.io). Clean structure: `src/main.jsx` entry, `App.jsx`, and components under `src/components/` (layout + sections). **To avoid the "text/jsx" MIME error:** use `npm run dev` locally and deploy only the **dist/** folder (e.g. GitHub Actions); never open `index.html` directly or serve the repo root as static files.
 
 ## Running locally
 
