@@ -11,7 +11,7 @@
     <script>
       (function () {
         var s = document.getElementById("app-script");
-        s.addEventListener("error", function () {
+        if (s) s.addEventListener("error", function () {
           var root = document.getElementById("root");
           root.innerHTML =
             '<div style="padding:40px 24px;font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;line-height:1.6">' +
