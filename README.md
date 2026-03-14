@@ -36,3 +36,11 @@ This repo uses GitHub Actions to build and deploy. On push to `main`, the workfl
 
 - In the repo **Settings → Pages**, set **Source** to **GitHub Actions** (not "Deploy from a branch"). Otherwise the live site would serve the raw source and trigger MIME/JSX errors.
 - After each push to `main`, the workflow runs and updates the live site.
+
+## Troubleshooting: MIME type error for `.jsx`
+
+If you see: *"Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of 'text/jsx'"*:
+
+- **Cause:** The browser is loading the **source** `index.html` (which points to `/src/main.jsx`). Raw `.jsx` is then served with MIME type `text/jsx`, which module scripts reject.
+- **Local fix:** Do not open `index.html` via `file://` or serve the project root with a static server. Use **`npm run dev`** or **`npm start`** (Vite dev server), or **`npm run build`** then **`npm run preview`** to serve the built `dist/` folder.
+- **GitHub Pages fix:** In **Settings → Pages**, set **Source** to **GitHub Actions**. The workflow deploys the built `dist/` output (with compiled `.js`), not the repo source.
