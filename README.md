@@ -35,6 +35,8 @@ The repo uses GitHub Actions to build and deploy. On push to `main`, the workflo
 - In **Settings → Pages**, set **Source** to **GitHub Actions** (not “Deploy from a branch”).
 - Never deploy the project root as static files; that can cause MIME/script errors.
 
+**If the live site shows "Cannot load app (MIME / script error)", see [DEPLOY.md](DEPLOY.md) for the fix.**
+
 ## Avoiding MIME type errors
 
 **Do not open `index.html` directly** (e.g. via `file://`) or serve the project root as static files. Browsers can then request `/src/main.jsx`, which some servers serve as `text/jsx`, causing “Expected a JavaScript module but got MIME type text/jsx”. **Always** use `npm run dev` for development and deploy only the **built** `dist/` folder for production (e.g. via the GitHub Actions workflow). The workflow builds the app and deploys `dist/`, so the live site never serves raw `.jsx` files.
