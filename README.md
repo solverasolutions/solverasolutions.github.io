@@ -28,6 +28,20 @@ Output is in `dist/`. To preview:
 npm run preview
 ```
 
+## Favicon checks (Playwright)
+
+`npm run test:e2e` starts the dev server (see `playwright.config.js`) and checks that:
+
+- `index.html` references generated **`favicon-*.png`** (tab icons), not raw `logo.png`.
+- `GET /logo.png` is still the navbar/footer asset.
+- `GET /favicon-32.png` is **32×32** (generated from **`public/favicon.png`**).
+
+**`public/favicon.png`** should be your **square** master icon; **`npm run favicons`** (runs before `npm run build`) downscales it to `favicon-16/32/48.png` and `apple-touch-icon.png` with `fit: "contain"` and a white letterbox.
+
+```bash
+npm run test:e2e
+```
+
 ## Deployment (GitHub Pages)
 
 The repo uses GitHub Actions to build and deploy. On push to `main`, the workflow builds and deploys **only the contents of `dist/`**.
@@ -43,7 +57,7 @@ The repo uses GitHub Actions to build and deploy. On push to `main`, the workflo
 
 ## Logo
 
-Place your logo at **`public/logo.png`**. It is referenced as `/logo.png` in the app. If you had a `logo.png` in the project root before, move it to `public/logo.png`.
+Place your logo at **`public/logo.png`** (navbar/footer). Place a **square** master at **`public/favicon.png`** for tab/home-screen icons. **Favicons** are generated from **`favicon.png`** (`npm run favicons`, or automatic via `prebuild`). Those outputs (`favicon-16/32/48.png`, `apple-touch-icon.png`) are **gitignored**; after clone run **`npm run favicons`** once (or **`npm run build`**) before **`npm run dev`** so tab icons exist locally. CI regenerates them on every build.
 
 ## Project structure
 
@@ -59,6 +73,10 @@ src/
   hooks/
     useInView.js    # Intersection Observer hook (plain JS)
 public/
-  favicon.svg
-  logo.png          # Add your logo here
+  logo.png          # Navbar / footer (commit)
+  favicon.png       # Square master for tabs (commit)
+  favicon-*.png     # Generated — gitignored; see scripts/generate-favicons.mjs
+  apple-touch-icon.png
+scripts/
+  generate-favicons.mjs
 ```
