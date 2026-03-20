@@ -1,3 +1,17 @@
 node_modules
 .env
 DEPLOY.md
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Vite build output (CI builds this)
+/dist/
+
+# Favicon sizes generated from public/favicon.png (npm run favicons / prebuild)
+/public/favicon-16.png
+/public/favicon-32.png
+/public/favicon-48.png
+/public/apple-touch-icon.png
